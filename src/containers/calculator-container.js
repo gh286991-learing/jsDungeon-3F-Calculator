@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 import React from 'react';
 import * as ActionCreators from '../actions';
-import Calculator from '../components/calculator';
+import Calculator from '../components/calculator/calculator';
 
 class CalculatorContainer extends React.Component {
   render() {
     return (
       <div>
-        Test
         <Calculator />
       </div>
     );
