@@ -13,8 +13,9 @@ class Calculator extends React.Component {
   }
 
   valueClick = (e) => {
+    const { get_Num } = this.props;
     const values = e.currentTarget.value;
-    console.log('value', values);
+    get_Num(values);
   }
 
   onClick =(e) => {
@@ -23,21 +24,25 @@ class Calculator extends React.Component {
   }
 
   render() {
-    const num = [...Array(10).keys()];
-    console.log(num);
+    const nums = [...Array(10).keys()];
+    const { num } = this.props;
     return (
       <div className="container">
         <div className="calculator_border">
-          <div className="screen" >
-            <div className="deputy_screen" > 99+189 =789</div>
-            <div className="main_screen" > 3343432</div>
+          <div className="screen">
+            <div className="deputy_screen"> 99+189 =789</div>
+            <div className="main_screen">
+              {' '}
+              {num}
+              {' '}
+            </div>
           </div>
           <div className="button_area">
             <div className="num_area">
 
               <div className="number_container">
 
-                {num.map((value) => {
+                {nums.map((value) => {
                   if (value === 0) {
                     return null;
                   }
@@ -48,65 +53,65 @@ class Calculator extends React.Component {
                         className="text"
                         onClick={this.valueClick}
                         value={value}
-                      >{value}
+                      >
+                        {value}
                       </button>
                     </div>
                   );
                 })}
 
                 <div className="number_bottom">
-                  <button 
+                  <button
                     type="button"
-                    className="text">
+                    className="text"
+                  >
                       0
                   </button>
                 </div>
                 <div className="number_bottom">
-                <button 
+                  <button
                     type="button"
-                    className="text">
+                    className="text"
+                  >
                       00
                   </button>
                 </div>
                 <div className="number_bottom">
-                <button 
+                  <button
                     type="button"
-                    className="text">
+                    className="text"
+                  >
                       .
                   </button>
                 </div>
 
               </div>
-   
-
             </div>
             <div className="function_area">
-              <button className="function_bottom">
-                <div
-                  className="function_text"
-                  onClick={this.onClick} > ÷ </div>
+              <button type="button" className="function_bottom" value="÷" onClick={this.onClick}>
+                <div className="function_text"> ÷ </div>
               </button>
-              <button className="function_bottom">
+              <button type="button" className="function_bottom">
                 <div className="function_text"> x </div>
               </button>
-              <button className="function_bottom">
+              <button type="button" className="function_bottom">
                 <div className="function_text"> + </div>
               </button>
-              <button className="function_bottom">
+              <button type="button" className="function_bottom">
                 <div className="function_text"> - </div>
               </button>
             </div>
           </div>
           <div className="bottom_button">
-              <button className="AC_button">
+            <button type="button" className="AC_button">
                 AC
-              </button>
-              <button className="AC_button">
+            </button>
+            <button type="button" className="AC_button">
                 ⌫
-              </button>
-              <button className="eq_button">
+            </button>
+            <button type="button" className="eq_button">
                 =
-              </button>
+            </button>
           </div>
 
         </div>
