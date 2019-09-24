@@ -13,9 +13,9 @@ class Calculator extends React.Component {
   }
 
   valueClick = (e) => {
-    const { get_Num } = this.props;
+    const { getNum } = this.props;
     const values = e.currentTarget.value;
-    get_Num(values);
+    getNum(values);
   }
 
   onClick =(e) => {
@@ -25,7 +25,9 @@ class Calculator extends React.Component {
 
   render() {
     const nums = [...Array(10).keys()];
-    const { num } = this.props;
+    const {
+      num, getZero, getZeroZero, getPoint,
+    } = this.props;
     return (
       <div className="container">
         <div className="calculator_border">
@@ -64,6 +66,7 @@ class Calculator extends React.Component {
                   <button
                     type="button"
                     className="text"
+                    onClick={getZero}
                   >
                       0
                   </button>
@@ -72,6 +75,7 @@ class Calculator extends React.Component {
                   <button
                     type="button"
                     className="text"
+                    onClick={getZeroZero}
                   >
                       00
                   </button>
@@ -80,6 +84,7 @@ class Calculator extends React.Component {
                   <button
                     type="button"
                     className="text"
+                    onClick={getPoint}
                   >
                       .
                   </button>

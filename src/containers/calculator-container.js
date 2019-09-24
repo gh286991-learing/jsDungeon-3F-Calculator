@@ -5,14 +5,22 @@ import Calculator from '../components/calculator/calculator';
 
 class CalculatorContainer extends React.Component {
   render() {
-    const { get_Num, calcutor } = this.props;
+    const {
+      getNum, calcutor, getZero, getZeroZero, getPoint,
+    } = this.props;
     const { num } = calcutor;
 
     // const screenNum = screenNum + num
 
     return (
       <div>
-        <Calculator get_Num={get_Num} num={num} />
+        <Calculator
+          getNum={getNum}
+          num={num}
+          getZero={getZero}
+          getZeroZero={getZeroZero}
+          getPoint={getPoint}
+        />
       </div>
     );
   }
