@@ -26,7 +26,7 @@ class Calculator extends React.Component {
   render() {
     const nums = [...Array(10).keys()];
     const {
-      num, getZero, getZeroZero, getPoint,
+      num, getZero, getZeroZero, getPoint,pressAC
     } = this.props;
     return (
       <div className="container">
@@ -108,7 +108,7 @@ class Calculator extends React.Component {
             </div>
           </div>
           <div className="bottom_button">
-            <button type="button" className="AC_button">
+            <button type="button" className="AC_button" onClick ={pressAC}>
                 AC
             </button>
             <button type="button" className="AC_button">

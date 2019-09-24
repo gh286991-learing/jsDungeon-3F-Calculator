@@ -2,6 +2,7 @@ export const GET_NUM = 'GET_NUM';
 export const GET_ZERO = 'GET_ZERO';
 export const GET_ZERO_ZERO = 'GET_ZERO_ZERO';
 export const GET_POINT = 'GET_POINT';
+export const PRESS_AC = 'PRESS_AC';
 
 
 export function getNum(num) {
@@ -28,3 +29,9 @@ export function getPoint() {
     type: GET_POINT,
   };
 }
+
+export function pressAC() {
+    return {
+      type: PRESS_AC,
+    };
+  }

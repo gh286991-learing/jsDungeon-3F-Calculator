@@ -3,6 +3,7 @@ import {
   GET_ZERO,
   GET_ZERO_ZERO,
   GET_POINT,
+  PRESS_AC
 } from '../actions/calcuator';
 
 
@@ -27,6 +28,11 @@ export default function calcultor(state = initialState, action) {
     }
     case GET_ZERO: {
       const numBefore = state.num;
+
+      if(numBefore === 0){
+          return state
+      }
+
       const num = String(`${numBefore}0`);
       return {
         ...state,
@@ -35,7 +41,12 @@ export default function calcultor(state = initialState, action) {
     }
     case GET_ZERO_ZERO: {
       const numBefore = state.num;
-      const num = String(`${numBefore}00`);
+
+      if(numBefore === 0){
+        return state
+    }
+
+    const num = String(`${numBefore}00`);
       return {
         ...state,
         num,
@@ -54,6 +65,15 @@ export default function calcultor(state = initialState, action) {
         num,
       };
     }
+
+    case PRESS_AC: {
+        const num = 0
+        return {
+          ...state,
+          num,
+        };
+      }
+      
     default:
       return state;
   }
