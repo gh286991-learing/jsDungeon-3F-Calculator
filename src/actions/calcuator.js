@@ -3,6 +3,7 @@ export const GET_ZERO = 'GET_ZERO';
 export const GET_ZERO_ZERO = 'GET_ZERO_ZERO';
 export const GET_POINT = 'GET_POINT';
 export const PRESS_AC = 'PRESS_AC';
+export const PRESS_BACK = 'PRESS_BACK';
 
 
 export function getNum(num) {
@@ -31,7 +32,13 @@ export function getPoint() {
 }
 
 export function pressAC() {
-    return {
-      type: PRESS_AC,
-    };
-  }
+  return {
+    type: PRESS_AC,
+  };
+}
+
+export function pressBack() {
+  return {
+    type: PRESS_BACK,
+  };
+}

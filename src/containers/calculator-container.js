@@ -6,7 +6,7 @@ import Calculator from '../components/calculator/calculator';
 class CalculatorContainer extends React.Component {
   render() {
     const {
-      getNum, calcutor, getZero, getZeroZero, getPoint,pressAC
+      getNum, calcutor, getZero, getZeroZero, getPoint, pressAC, pressBack,
     } = this.props;
     const { num } = calcutor;
 
@@ -20,7 +20,8 @@ class CalculatorContainer extends React.Component {
           getZero={getZero}
           getZeroZero={getZeroZero}
           getPoint={getPoint}
-          pressAC = {pressAC}
+          pressAC={pressAC}
+          pressBack={pressBack}
         />
       </div>
     );
