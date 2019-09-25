@@ -9,8 +9,8 @@ import {
 
 
 const initialState = {
-  // isLoading: false,
   num: 0,
+  deputy : 0
 };
 
 
@@ -19,25 +19,30 @@ export default function calcultor(state = initialState, action) {
     case GET_NUM: {
       const numGet = action.num;
       const numBefore = state.num;
+      const deputyBefore = String(state.deputy)
       const num = Number(numBefore + numGet);
+      const deputy = (deputyBefore + numGet).replace(/\b(0+)/g,"")
 
-      // console.log('state' ,state)
       return {
         ...state,
         num,
+        deputy,
       };
     }
     case GET_ZERO: {
       const numBefore = state.num;
+      const deputyBefore = String(state.deputy)
+ 
 
       if (numBefore === 0) {
         return state;
       }
-
+      const deputy = String(`${deputyBefore}0`)
       const num = String(`${numBefore}0`);
       return {
         ...state,
         num,
+        deputy,
       };
     }
     case GET_ZERO_ZERO: {

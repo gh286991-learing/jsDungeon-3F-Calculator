@@ -8,7 +8,7 @@ class CalculatorContainer extends React.Component {
     const {
       getNum, calcutor, getZero, getZeroZero, getPoint, pressAC, pressBack,
     } = this.props;
-    const { num } = calcutor;
+    const { num ,deputy} = calcutor;
 
     // const screenNum = screenNum + num
 
@@ -17,6 +17,7 @@ class CalculatorContainer extends React.Component {
         <Calculator
           getNum={getNum}
           num={num}
+          deputy ={deputy}
           getZero={getZero}
           getZeroZero={getZeroZero}
           getPoint={getPoint}

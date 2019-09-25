@@ -26,13 +26,13 @@ class Calculator extends React.Component {
   render() {
     const nums = [...Array(10).keys()];
     const {
-      num, getZero, getZeroZero, getPoint, pressAC, pressBack,
+      num, getZero, getZeroZero, getPoint, pressAC, pressBack, deputy
     } = this.props;
     return (
       <div className="container">
         <div className="calculator_border">
           <div className="screen">
-            <div className="deputy_screen"> 99+189 =789</div>
+            <div className="deputy_screen"> {deputy}</div>
             <div className="main_screen">
               {' '}
               {num}
