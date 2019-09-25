@@ -26,13 +26,16 @@ class Calculator extends React.Component {
   render() {
     const nums = [...Array(10).keys()];
     const {
-      num, getZero, getZeroZero, getPoint, pressAC, pressBack, deputy
+      num, getZero, getZeroZero, getPoint, pressAC, pressBack, deputy, getPlus, pressCalculate,
     } = this.props;
     return (
       <div className="container">
         <div className="calculator_border">
           <div className="screen">
-            <div className="deputy_screen"> {deputy}</div>
+            <div className="deputy_screen">
+              {' '}
+              {deputy}
+            </div>
             <div className="main_screen">
               {' '}
               {num}
@@ -99,7 +102,7 @@ class Calculator extends React.Component {
               <button type="button" className="function_bottom">
                 <div className="function_text"> x </div>
               </button>
-              <button type="button" className="function_bottom">
+              <button type="button" className="function_bottom" onClick={getPlus}>
                 <div className="function_text"> + </div>
               </button>
               <button type="button" className="function_bottom">
@@ -114,7 +117,7 @@ class Calculator extends React.Component {
             <button type="button" className="AC_button" onClick={pressBack}>
                 ⌫
             </button>
-            <button type="button" className="eq_button">
+            <button type="button" className="eq_button" onClick={pressCalculate}>
                 =
             </button>
           </div>
