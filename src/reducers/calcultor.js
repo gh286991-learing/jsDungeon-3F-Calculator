@@ -12,7 +12,8 @@ import {
 
 const initialState = {
   num: 0,
-  deputy: 0,
+  deputy: null,
+  operatored: false
 };
 
 
@@ -21,8 +22,11 @@ export default function calcultor(state = initialState, action) {
     case GET_NUM: {
       const numGet = action.num;
       const numBefore = state.num;
+      const operatored = state.operatored
+
       const deputyBefore = String(state.deputy);
-      const num = Number(numBefore + numGet);
+
+      const num = !operatored ? Number(numBefore + numGet) : numGet
 
       const deputy = ((deputyBefore === 0 ? numBefore : deputyBefore) + numGet).replace(/\b(0)/g, '');
 
@@ -30,7 +34,7 @@ export default function calcultor(state = initialState, action) {
       return {
         ...state,
         num,
-        deputy,
+        operatored : false
       };
     }
     case GET_ZERO: {
@@ -48,7 +52,6 @@ export default function calcultor(state = initialState, action) {
       return {
         ...state,
         num,
-        deputy,
       };
     }
     case GET_ZERO_ZERO: {
@@ -64,6 +67,7 @@ export default function calcultor(state = initialState, action) {
         num,
       };
     }
+
     case GET_POINT: {
       const numBefore = String(state.num);
 
@@ -99,42 +103,40 @@ export default function calcultor(state = initialState, action) {
     }
 
     case GET_PLUS: {
-      const numBefore = String(state.num);
-      const deputyBefore = String(state.deputy);
+      const num = String(state.num);
+      const deputyBefore = state.deputy
+      const operator = '+'
 
-      if (numBefore === '0') {
-        return state;
-      }
-
-      if (deputyBefore === '0') {
-        return {
+      if( deputyBefore === null ){
+        return{
           ...state,
-          num: 0,
-          deputy: `${numBefore}+`,
-        };
+        num: num,
+        deputy : `${num}${operator}`,
+        operatored : true
+        }
       }
 
-      const deputy = `${deputyBefore}+`;
+      const deputy = `${deputyBefore}${num}${operator}`;
 
       return {
         ...state,
-        num: 0,
+        num: num,
         deputy,
+        operatored : true
       };
     }
 
     case PRESS_CALCULATE: {
       const deputy = String(state.deputy);
-      const lastIndex = deputy.length - 1;
-      const lastN = Number(deputy.charAt(lastIndex));
+      const operator = state.operator
+      const num = String(state.num)
 
-      const formula = isNaN(lastN) ? deputy.substring(0, lastIndex) : deputy;
-      const result = eval(formula);
+      const result = eval(deputy + operator+num);
 
       return {
         ...state,
         num: result,
-        deputy: 0,
+        deputy: null,
       };
     }
 
