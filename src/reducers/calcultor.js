@@ -13,7 +13,9 @@ import {
 const initialState = {
   num: 0,
   deputy: null,
-  operatored: false
+  operatored: false,
+  operator: null,
+  calcultor: 0
 };
 
 
@@ -37,6 +39,7 @@ export default function calcultor(state = initialState, action) {
         operatored : false
       };
     }
+
     case GET_ZERO: {
       const numBefore = state.num;
       const deputyBefore = String(state.deputy);
@@ -54,6 +57,7 @@ export default function calcultor(state = initialState, action) {
         num,
       };
     }
+
     case GET_ZERO_ZERO: {
       const numBefore = state.num;
 
@@ -83,10 +87,11 @@ export default function calcultor(state = initialState, action) {
     }
 
     case PRESS_AC: {
-      const num = 0;
+      // const num = 0;
       return {
         ...state,
-        num,
+        num : 0,
+        deputy : null
       };
     }
 
@@ -103,40 +108,57 @@ export default function calcultor(state = initialState, action) {
     }
 
     case GET_PLUS: {
-      const num = String(state.num);
+      const num = state.num;
       const deputyBefore = state.deputy
+      const calcultor = state.calcultor
       const operator = '+'
 
       if( deputyBefore === null ){
         return{
           ...state,
         num: num,
-        deputy : `${num}${operator}`,
-        operatored : true
+        deputy : `${num}`,
+        operatored : true,
+        calcultor : num,
+        operator :operator
         }
       }
 
-      const deputy = `${deputyBefore}${num}${operator}`;
+      const deputy = `${deputyBefore}${operator}${num}`;
+
+      const plus = Number(calcultor) + Number(num)
 
       return {
         ...state,
-        num: num,
+        num: plus,
         deputy,
-        operatored : true
+        operatored : true,
+        calcultor : plus,
+        operator : operator
       };
     }
 
     case PRESS_CALCULATE: {
-      const deputy = String(state.deputy);
+      const calcultor = Number(state.calcultor);
+      const num = Number(state.num)
       const operator = state.operator
-      const num = String(state.num)
 
-      const result = eval(deputy + operator+num);
+      let result
+
+      switch (operator) {
+        case '+':
+          result = calcultor + num
+          break;
+      
+        default:
+          break;
+      }
 
       return {
         ...state,
         num: result,
         deputy: null,
+        operatored : true,
       };
     }
 
