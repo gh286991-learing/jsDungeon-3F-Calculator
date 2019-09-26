@@ -15,7 +15,7 @@ const initialState = {
   deputy: null,
   operatored: false,
   operator: null,
-  calcultor: 0
+  calcultor: 0,
 };
 
 
@@ -24,33 +24,25 @@ export default function calcultor(state = initialState, action) {
     case GET_NUM: {
       const numGet = action.num;
       const numBefore = state.num;
-      const operatored = state.operatored
+      const { operatored } = state;
 
-      const deputyBefore = String(state.deputy);
-
-      const num = !operatored ? Number(numBefore + numGet) : numGet
-
-      const deputy = ((deputyBefore === 0 ? numBefore : deputyBefore) + numGet).replace(/\b(0)/g, '');
-
+      const num = !operatored ? Number(numBefore + numGet) : Number(numGet);
 
       return {
         ...state,
         num,
-        operatored : false
+        operatored: false,
       };
     }
 
     case GET_ZERO: {
       const numBefore = state.num;
-      const deputyBefore = String(state.deputy);
 
 
       if (numBefore === 0) {
         return state;
       }
 
-
-      const deputy = String(`${deputyBefore}0`);
       const num = String(`${numBefore}0`);
       return {
         ...state,
@@ -87,11 +79,10 @@ export default function calcultor(state = initialState, action) {
     }
 
     case PRESS_AC: {
-      // const num = 0;
       return {
         ...state,
-        num : 0,
-        deputy : null
+        num: 0,
+        deputy: null,
       };
     }
 
@@ -108,48 +99,53 @@ export default function calcultor(state = initialState, action) {
     }
 
     case GET_PLUS: {
-      const num = state.num;
-      const deputyBefore = state.deputy
-      const calcultor = state.calcultor
-      const operator = '+'
+      const { num } = state;
+      const deputyBefore = state.deputy;
+      const { calcultor } = state;
+      const operator = '+';
 
-      if( deputyBefore === null ){
-        return{
+      if (deputyBefore === null) {
+        return {
           ...state,
-        num: num,
-        deputy : `${num}`,
-        operatored : true,
-        calcultor : num,
-        operator :operator
-        }
+          num,
+          deputy: `${num}`,
+          operatored: true,
+          calcultor: num,
+          operator,
+        };
       }
 
       const deputy = `${deputyBefore}${operator}${num}`;
 
-      const plus = Number(calcultor) + Number(num)
+      const plus = Number(calcultor) + Number(num);
 
       return {
         ...state,
         num: plus,
         deputy,
-        operatored : true,
-        calcultor : plus,
-        operator : operator
+        operatored: true,
+        calcultor: plus,
+        operator,
       };
     }
 
     case PRESS_CALCULATE: {
-      const calcultor = Number(state.calcultor);
-      const num = Number(state.num)
-      const operator = state.operator
+      const {
+        calcultor, num, deputy, operator,
+      } = state;
 
-      let result
+      if (num === 0 && deputy === null) {
+        return state;
+      }
+
+      let result;
+
 
       switch (operator) {
         case '+':
-          result = calcultor + num
+          result = calcultor + num;
           break;
-      
+
         default:
           break;
       }
@@ -158,7 +154,7 @@ export default function calcultor(state = initialState, action) {
         ...state,
         num: result,
         deputy: null,
-        operatored : true,
+        operatored: true,
       };
     }
 
