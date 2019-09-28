@@ -10,8 +10,6 @@ class CalculatorContainer extends React.Component {
     } = this.props;
     const { num, deputy } = calcutor;
 
-    // const screenNum = screenNum + num
-
     return (
       <div>
         <Calculator

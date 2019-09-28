@@ -45,9 +45,10 @@ export function pressBack() {
   };
 }
 
-export function getPlus() {
+export function getPlus(operator) {
   return {
     type: GET_PLUS,
+    operator
   };
 }
 

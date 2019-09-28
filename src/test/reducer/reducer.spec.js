@@ -85,9 +85,11 @@ describe('Clacultor function test', () => {
         calcultor: {
           num: 33, deputy: '33', operator: '+', calcultor: 33,
         },
-      }, { type: 'GET_PLUS' });
+      }, { type: 'GET_PLUS' , operator: '+' });
 
       const { num, deputy } = state.calcultor;
+
+      console.log(state)
 
       expect(num).toBe(66);
       expect(deputy).toBe('33+33');

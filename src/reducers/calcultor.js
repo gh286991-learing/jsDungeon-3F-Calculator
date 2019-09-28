@@ -16,6 +16,7 @@ const initialState = {
   operatored: false,
   operator: null,
   calcultor: 0,
+  unCountNum : null
 };
 
 
@@ -99,33 +100,78 @@ export default function calcultor(state = initialState, action) {
     }
 
     case GET_PLUS: {
-      const { num } = state;
-      const deputyBefore = state.deputy;
-      const { calcultor } = state;
-      const operator = '+';
+      const symbol = action.operator;
+      const { num ,calcultor ,deputy ,operator, unCountNum} = state;
+      
 
-      if (deputyBefore === null) {
+      if (deputy === null) {
         return {
           ...state,
           num,
           deputy: `${num}`,
           operatored: true,
           calcultor: num,
-          operator,
+          operator : symbol,
         };
       }
 
-      const deputy = `${deputyBefore}${operator}${num}`;
+      let result
+      let deputyScreen
+      let remain 
+      
+      if (symbol === '+'){
 
-      const plus = Number(calcultor) + Number(num);
+        if(operator === 'x'){
+          deputyScreen = `${deputy}${operator}${num}`;
+          result = Number(calcultor) * Number(num) + Number(unCountNum);
+          remain = null
+        }
+        else if(unCountNum != null ){ 
+          result = Number(calcultor) +  Number(unCountNum);
+          deputyScreen = `${deputy}`;
+          remain = null
 
+        }
+        else{
+          result = Number(calcultor) + Number(num);
+          deputyScreen = `${deputy}${symbol}${num}`;
+        }
+        
+        
+      }
+      else if(symbol ==='-'){
+        result = Number(calcultor) - Number(num);
+        deputyScreen = `${deputy}${symbol}${num}`;
+      }
+      else if(symbol ==='x'){
+      // 2+ (5 * 6) + >>> 37
+        if(operator === '+' ||operator === '-' ){
+          deputyScreen = `${deputy}${operator}${num}`;
+          result = Number(num);
+          remain = calcultor
+          // calcultor
+          
+        }else{
+          deputyScreen = `${deputy}${operator}${num}`;
+          result = Number(calcultor) * Number(num);
+          remain = unCountNum
+        }
+
+      }
+      else if(symbol ==='÷'){
+        result = Number(calcultor) / Number(num);
+      }
+
+      
+      
       return {
         ...state,
-        num: plus,
-        deputy,
+        num: result,
+        deputy :deputyScreen,
         operatored: true,
-        calcultor: plus,
-        operator,
+        calcultor: result,
+        operator: symbol,
+        unCountNum : remain
       };
     }
 
