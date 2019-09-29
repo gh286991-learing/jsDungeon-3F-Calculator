@@ -9,21 +9,22 @@ import {
   PRESS_CALCULATE,
 } from '../actions/calcuator';
 
+import toPostfix from '../tools/trsPostfix';
 
 const initialState = {
   nums: {
-    acc : 0,
-    last : 0,
-    curr:0,
+    acc: 0,
+    last: 0,
+    curr: 0,
   },
 
   deputy: null,
   operatored: false,
   operator: null,
   calcuator: {
-    acc : 0 , 
-    brackets:0
-  }
+    acc: 0,
+    brackets: 0,
+  },
 };
 
 
@@ -31,16 +32,16 @@ export default function calcultor(state = initialState, action) {
   switch (action.type) {
     case GET_NUM: {
       const numInput = action.num;
-      const { operatored , nums } = state;
-      const { acc , curr, last}= nums
+      const { operatored, nums } = state;
+      const { acc, curr, last } = nums;
 
       const num = !operatored ? Number(curr + numInput) : Number(numInput);
 
       return {
         ...state,
-        nums:{
-         ...nums,
-          curr : num,
+        nums: {
+          ...nums,
+          curr: num,
         },
         operatored: false,
       };
@@ -111,169 +112,18 @@ export default function calcultor(state = initialState, action) {
 
     case GET_PLUS: {
       const symbol = action.operator;
-      const { nums ,calcultor ,deputy ,operator, unCountNum,operatored } = state;
-      const {acc , last , curr} = nums
+      const {
+        nums, calcultor, deputy, operator, unCountNum, operatored,
+      } = state;
+      const { acc, last, curr } = nums;
+      const testInput = 'A+B*D*C';
 
-      let result
-      let formula
+      console.log(toPostfix(testInput));
 
-       if(operatored === true){
-
-        formula = deputy.substring(0,deputy.length-1) + symbol
-
-        return {
-          ...state,
-          deputy :formula,
-          operator : symbol
-        }
-       }
-
-
-
-      if(symbol === '+'){
-
-        formula = !deputy? `${curr}${symbol}` : `${deputy}${curr}${symbol}`
-
-        if(operator === 'x'){
-          const remain = acc - last
-
-          result =  acc * curr 
-
-          return {
-            ...state,
-            nums:{
-              ...nums,
-              acc :result,
-              curr : result,
-              last: curr
-            },
-            deputy :formula,
-            operator: symbol,
-            operatored: true,
-          }
-          
-        }else{
-          result = acc + curr
-        }
-
-      }
-      else if(symbol === 'x'){
-        formula = !deputy? `${curr}${symbol}` : `${deputy}${curr}${symbol}`
-        if(operator === '+'){ 
-          result = acc + curr
-        }else{
-          result = last === 0 ? curr : acc * curr
-        }
-       
-        
-      }
 
       return {
         ...state,
-        nums:{
-          ...nums,
-          acc :result,
-          curr : result,
-          last : acc
-        },
-        deputy :formula,
-        operatored: true,
-        operator: symbol,
-      }
-
-
-      // if(operatored === true){
-
-      //   const formula = deputy.substring(0,deputy.length-1) + symbol
-
-      //   if(symbol === 'x'){
-      //     // const beforeCalcutor = calcultor-temp
-    
-      //     return {
-      //       ...state,
-      //       num : tempMuti,
-      //       deputy :formula,
-      //       operatored: true,
-      //       calcultor: tempMuti,
-      //       operator: symbol,
-      //       unCountNum,
-      //     }
-
-      //   }else{
-      //     return {
-      //       ...state,
-      //       num,
-      //       deputy :formula,
-      //       operatored: true,
-      //       calcultor,
-      //       operator: symbol,
-      //       unCountNum 
-      //     }
-      //   }
-
-
-      // }
-
-      
-      // if(symbol === '+'){
-
-      //   let result
-
-      //   if(operator === 'x'){
-      //     result = num * calcultor + unCountNum
-      //   }else{
-      //     result = num + calcultor
-      //   }
-
-      //   const formula = !deputy? `${num}${symbol}` : `${deputy}${num}${symbol}`
-   
-
-      //   return {
-      //     ...state,
-      //     num: result,
-      //     deputy :formula,
-      //     operatored: true,
-      //     calcultor: result,
-      //     operator: symbol,
-      //     unCountNum : null
-      //   }
-      // }
-
-      // if(symbol === 'x'){
-
-      //   const formula = !deputy? `${num}${symbol}` : `${deputy}${num}${symbol}`
-        
-
-
-      //   if(operator ==='+'){
-
-      //     return {
-      //       ...state,
-      //       num: num,
-      //       deputy :formula,
-      //       operatored: true,
-      //       calcultor: num,
-      //       operator: symbol,
-      //       unCountNum : calcultor
-      //     }
-      //   }
-      //   else{
-          
-      //     const result = num *  (calcultor === 0? 1:calcultor)
-      //     return {
-      //       ...state,
-      //       num: result,
-      //       deputy :formula,
-      //       operatored: true,
-      //       calcultor: result,
-      //       operator: symbol,
-      //       unCountNum,
-      //       tempMuti : result
-      //     }
-      //   }
-
-      // }
-
+      };
     }
 
     case PRESS_CALCULATE: {

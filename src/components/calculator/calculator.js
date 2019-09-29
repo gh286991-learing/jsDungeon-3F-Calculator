@@ -96,16 +96,16 @@ class Calculator extends React.Component {
               </div>
             </div>
             <div className="function_area">
-              <button type="button" className="function_bottom" onClick={()=>getPlus('÷')}>
+              <button type="button" className="function_bottom" onClick={() => getPlus('÷')}>
                 <div className="function_text"> ÷ </div>
               </button>
-              <button type="button" className="function_bottom" onClick={()=>getPlus('x')}>
+              <button type="button" className="function_bottom" onClick={() => getPlus('x')}>
                 <div className="function_text"> x </div>
               </button>
-              <button type="button" className="function_bottom" onClick={()=>getPlus('+')}>
+              <button type="button" className="function_bottom" onClick={() => getPlus('+')}>
                 <div className="function_text"> + </div>
               </button>
-              <button type="button" className="function_bottom" onClick={()=>getPlus('-')}>
+              <button type="button" className="function_bottom" onClick={() => getPlus('-')}>
                 <div className="function_text"> - </div>
               </button>
             </div>
