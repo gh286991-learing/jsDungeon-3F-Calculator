@@ -72,18 +72,18 @@ describe('Clacultor function test', () => {
         calcultor: {
           num: 33, deputy: null,
         },
-      }, { type: 'GET_PLUS' });
+      }, { type: 'GET_PLUS' , operator : '+',calcultor:0});
 
       const { num, deputy } = state.calcultor;
 
       expect(num).toBe(33);
-      expect(deputy).toBe('33');
+      expect(deputy).toBe('33+');
     });
 
     it('Press plus again, main should be 66 , depty should be 33+33', () => {
       state = calcultor({
         calcultor: {
-          num: 33, deputy: '33', operator: '+', calcultor: 33,
+          num: 33, deputy: '33', calcultor: 33,
         },
       }, { type: 'GET_PLUS' , operator: '+' });
 
@@ -95,5 +95,29 @@ describe('Clacultor function test', () => {
       expect(deputy).toBe('33+33');
     });
   });
+
+  describe('2+5x2x2+ >>> 22' , ()=>{
+
+    it('should handle actions', () => {
+      let state;
+      state = calcultor({calcultor:{num:0,deputy:null,operatored:false,operator:null,calcultor:0,unCountNum:null}}, {type:'GET_NUM',num:'2'});
+      expect(state).toEqual({calcultor:{num:2,deputy:null,operatored:false,operator:null,calcultor:0,unCountNum:null}});
+      state = calcultor({calcultor:{num:2,deputy:null,operatored:false,operator:null,calcultor:0,unCountNum:null}}, {type:'GET_PLUS',operator:'+'});
+      expect(state).toEqual({calcultor:{num:2,deputy:'2+',operatored:true,operator:'+',calcultor:2,unCountNum:null}});
+      state = calcultor({calcultor:{num:2,deputy:'2+',operatored:true,operator:'+',calcultor:2,unCountNum:null}}, {type:'GET_NUM',num:'5'});
+      expect(state).toEqual({calcultor:{num:5,deputy:'2+',operatored:false,operator:'+',calcultor:2,unCountNum:null}});
+      state = calcultor({calcultor:{num:5,deputy:'2+',operatored:false,operator:'+',calcultor:2,unCountNum:null}}, {type:'GET_PLUS',operator:'x'});
+      expect(state).toEqual({calcultor:{num:5,deputy:'2+5x',operatored:true,operator:'x',calcultor:5,unCountNum:2}});
+      state = calcultor({calcultor:{num:5,deputy:'2+5x',operatored:true,operator:'x',calcultor:5,unCountNum:2}}, {type:'GET_NUM',num:'2'});
+      expect(state).toEqual({calcultor:{num:2,deputy:'2+5x',operatored:false,operator:'x',calcultor:5,unCountNum:2}});
+      state = calcultor({calcultor:{num:2,deputy:'2+5x',operatored:false,operator:'x',calcultor:5,unCountNum:2}}, {type:'GET_PLUS',operator:'x'});
+      expect(state).toEqual({calcultor:{num:10,deputy:'2+5x2x',operatored:true,operator:'x',calcultor:10,unCountNum:2}});
+      state = calcultor({calcultor:{num:10,deputy:'2+5x2x',operatored:true,operator:'x',calcultor:10,unCountNum:2}}, {type:'GET_NUM',num:'2'});
+      expect(state).toEqual({calcultor:{num:2,deputy:'2+5x2x',operatored:false,operator:'x',calcultor:10,unCountNum:2}});
+      state = calcultor({calcultor:{num:2,deputy:'2+5x2x',operatored:false,operator:'x',calcultor:10,unCountNum:2}}, {type:'GET_PLUS',operator:'+'});
+      expect(state).toEqual({calcultor:{num:22,deputy:'2+5x2x2+',operatored:true,operator:'+',calcultor:22,unCountNum:null}});
+    });
+
+  })
 });
 

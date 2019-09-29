@@ -11,27 +11,37 @@ import {
 
 
 const initialState = {
-  num: 0,
+  nums: {
+    acc : 0,
+    last : 0,
+    curr:0,
+  },
+
   deputy: null,
   operatored: false,
   operator: null,
-  calcultor: 0,
-  unCountNum : null
+  calcuator: {
+    acc : 0 , 
+    brackets:0
+  }
 };
 
 
 export default function calcultor(state = initialState, action) {
   switch (action.type) {
     case GET_NUM: {
-      const numGet = action.num;
-      const numBefore = state.num;
-      const { operatored } = state;
+      const numInput = action.num;
+      const { operatored , nums } = state;
+      const { acc , curr, last}= nums
 
-      const num = !operatored ? Number(numBefore + numGet) : Number(numGet);
+      const num = !operatored ? Number(curr + numInput) : Number(numInput);
 
       return {
         ...state,
-        num,
+        nums:{
+         ...nums,
+          curr : num,
+        },
         operatored: false,
       };
     }
@@ -101,78 +111,169 @@ export default function calcultor(state = initialState, action) {
 
     case GET_PLUS: {
       const symbol = action.operator;
-      const { num ,calcultor ,deputy ,operator, unCountNum} = state;
-      
-
-      if (deputy === null) {
-        return {
-          ...state,
-          num,
-          deputy: `${num}`,
-          operatored: true,
-          calcultor: num,
-          operator : symbol,
-        };
-      }
+      const { nums ,calcultor ,deputy ,operator, unCountNum,operatored } = state;
+      const {acc , last , curr} = nums
 
       let result
-      let deputyScreen
-      let remain 
-      
-      if (symbol === '+'){
+      let formula
+
+       if(operatored === true){
+
+        formula = deputy.substring(0,deputy.length-1) + symbol
+
+        return {
+          ...state,
+          deputy :formula,
+          operator : symbol
+        }
+       }
+
+
+
+      if(symbol === '+'){
+
+        formula = !deputy? `${curr}${symbol}` : `${deputy}${curr}${symbol}`
 
         if(operator === 'x'){
-          deputyScreen = `${deputy}${operator}${num}`;
-          result = Number(calcultor) * Number(num) + Number(unCountNum);
-          remain = null
-        }
-        else if(unCountNum != null ){ 
-          result = Number(calcultor) +  Number(unCountNum);
-          deputyScreen = `${deputy}`;
-          remain = null
+          const remain = acc - last
 
-        }
-        else{
-          result = Number(calcultor) + Number(num);
-          deputyScreen = `${deputy}${symbol}${num}`;
-        }
-        
-        
-      }
-      else if(symbol ==='-'){
-        result = Number(calcultor) - Number(num);
-        deputyScreen = `${deputy}${symbol}${num}`;
-      }
-      else if(symbol ==='x'){
-      // 2+ (5 * 6) + >>> 37
-        if(operator === '+' ||operator === '-' ){
-          deputyScreen = `${deputy}${operator}${num}`;
-          result = Number(num);
-          remain = calcultor
-          // calcultor
+          result =  acc * curr 
+
+          return {
+            ...state,
+            nums:{
+              ...nums,
+              acc :result,
+              curr : result,
+              last: curr
+            },
+            deputy :formula,
+            operator: symbol,
+            operatored: true,
+          }
           
         }else{
-          deputyScreen = `${deputy}${operator}${num}`;
-          result = Number(calcultor) * Number(num);
-          remain = unCountNum
+          result = acc + curr
         }
 
       }
-      else if(symbol ==='÷'){
-        result = Number(calcultor) / Number(num);
+      else if(symbol === 'x'){
+        formula = !deputy? `${curr}${symbol}` : `${deputy}${curr}${symbol}`
+        if(operator === '+'){ 
+          result = acc + curr
+        }else{
+          result = last === 0 ? curr : acc * curr
+        }
+       
+        
       }
 
-      
-      
       return {
         ...state,
-        num: result,
-        deputy :deputyScreen,
+        nums:{
+          ...nums,
+          acc :result,
+          curr : result,
+          last : acc
+        },
+        deputy :formula,
         operatored: true,
-        calcultor: result,
         operator: symbol,
-        unCountNum : remain
-      };
+      }
+
+
+      // if(operatored === true){
+
+      //   const formula = deputy.substring(0,deputy.length-1) + symbol
+
+      //   if(symbol === 'x'){
+      //     // const beforeCalcutor = calcultor-temp
+    
+      //     return {
+      //       ...state,
+      //       num : tempMuti,
+      //       deputy :formula,
+      //       operatored: true,
+      //       calcultor: tempMuti,
+      //       operator: symbol,
+      //       unCountNum,
+      //     }
+
+      //   }else{
+      //     return {
+      //       ...state,
+      //       num,
+      //       deputy :formula,
+      //       operatored: true,
+      //       calcultor,
+      //       operator: symbol,
+      //       unCountNum 
+      //     }
+      //   }
+
+
+      // }
+
+      
+      // if(symbol === '+'){
+
+      //   let result
+
+      //   if(operator === 'x'){
+      //     result = num * calcultor + unCountNum
+      //   }else{
+      //     result = num + calcultor
+      //   }
+
+      //   const formula = !deputy? `${num}${symbol}` : `${deputy}${num}${symbol}`
+   
+
+      //   return {
+      //     ...state,
+      //     num: result,
+      //     deputy :formula,
+      //     operatored: true,
+      //     calcultor: result,
+      //     operator: symbol,
+      //     unCountNum : null
+      //   }
+      // }
+
+      // if(symbol === 'x'){
+
+      //   const formula = !deputy? `${num}${symbol}` : `${deputy}${num}${symbol}`
+        
+
+
+      //   if(operator ==='+'){
+
+      //     return {
+      //       ...state,
+      //       num: num,
+      //       deputy :formula,
+      //       operatored: true,
+      //       calcultor: num,
+      //       operator: symbol,
+      //       unCountNum : calcultor
+      //     }
+      //   }
+      //   else{
+          
+      //     const result = num *  (calcultor === 0? 1:calcultor)
+      //     return {
+      //       ...state,
+      //       num: result,
+      //       deputy :formula,
+      //       operatored: true,
+      //       calcultor: result,
+      //       operator: symbol,
+      //       unCountNum,
+      //       tempMuti : result
+      //     }
+      //   }
+
+      // }
+
     }
 
     case PRESS_CALCULATE: {

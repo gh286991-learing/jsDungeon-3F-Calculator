@@ -8,13 +8,13 @@ class CalculatorContainer extends React.Component {
     const {
       getNum, calcutor, getZero, getZeroZero, getPoint, pressAC, pressBack, getPlus, pressCalculate,
     } = this.props;
-    const { num, deputy } = calcutor;
+    const { nums, deputy } = calcutor;
 
     return (
       <div>
         <Calculator
           getNum={getNum}
-          num={num}
+          num={nums.curr}
           deputy={deputy}
           getZero={getZero}
           getZeroZero={getZeroZero}
