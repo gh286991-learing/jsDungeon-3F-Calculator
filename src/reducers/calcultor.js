@@ -9,22 +9,18 @@ import {
   PRESS_CALCULATE,
 } from '../actions/calcuator';
 
-import toPostfix from '../tools/trsPostfix';
+import { toPostfix, postfixCal } from '../tools/trsPostfix';
 
 const initialState = {
   nums: {
-    acc: 0,
     last: 0,
     curr: 0,
+    multiDivi: 0,
   },
-
   deputy: null,
   operatored: false,
   operator: null,
-  calcuator: {
-    acc: 0,
-    brackets: 0,
-  },
+  calculated: false,
 };
 
 
@@ -33,7 +29,7 @@ export default function calcultor(state = initialState, action) {
     case GET_NUM: {
       const numInput = action.num;
       const { operatored, nums } = state;
-      const { acc, curr, last } = nums;
+      const { last, curr, multiDivi } = nums;
 
       const num = !operatored ? Number(curr + numInput) : Number(numInput);
 
@@ -99,59 +95,89 @@ export default function calcultor(state = initialState, action) {
     }
 
     case PRESS_BACK: {
-      const numBefore = String(state.num);
+      const { nums } = state;
+      const { curr } = nums;
+      const numBefore = String(curr);
       const numLength = numBefore.length;
-
-      const num = numLength === 1 ? 0 : numBefore.substring(0, numLength - 1);
+      const numString = numLength === 1 ? 0 : numBefore.substring(0, numLength - 1);
+      const num = Number(numString);
 
       return {
         ...state,
-        num,
+        nums: {
+          ...nums,
+          curr: num,
+        },
       };
     }
 
     case GET_PLUS: {
       const symbol = action.operator;
       const {
-        nums, calcultor, deputy, operator, unCountNum, operatored,
+        nums, deputy, operatored, calculated,
       } = state;
-      const { acc, last, curr } = nums;
-      const testInput = 'A+B*D*C';
+      const { last, curr, multiDivi } = nums;
 
-      console.log(toPostfix(testInput));
+      const screen = (deputy, operatored) => {
+        if (!deputy) {
+          return `${curr}${symbol}`;
+        } if (calculated) {
+          return `${deputy}${symbol}`;
+        }
+        if (operatored) {
+          return `${deputy.substring(0, deputy.length - 1)}${symbol}`;
+        } return `${deputy}${curr}${symbol}`;
+      };
+
+      const deputyScreen = screen(deputy, operatored);
+
+      const formula = deputyScreen.substring(0, deputyScreen.length - 1);
+
+      const postfix = toPostfix(formula);
+      const value = postfixCal(postfix);
 
 
       return {
         ...state,
+        nums: {
+          ...nums,
+          curr: value,
+        },
+        deputy: deputyScreen,
+        operatored: true,
+        operator: symbol,
+        calculated: false,
       };
     }
 
     case PRESS_CALCULATE: {
       const {
-        calcultor, num, deputy, operator,
+        nums, deputy, operator,
       } = state;
+      const {
+        curr,
+      } = nums;
 
-      if (num === 0 && deputy === null) {
+      if (nums === 0 && deputy === null) {
         return state;
       }
 
-      let result;
+      const deputyScreen = `${deputy.substring(0, deputy.length - 1)}${operator}${curr}`;
 
 
-      switch (operator) {
-        case '+':
-          result = calcultor + num;
-          break;
+      const postfix = toPostfix(deputyScreen);
+      const value = postfixCal(postfix);
 
-        default:
-          break;
-      }
 
       return {
         ...state,
-        num: result,
-        deputy: null,
+        nums: {
+          ...nums,
+          curr: value,
+        },
+        deputy: deputyScreen,
         operatored: true,
+        calculated: true,
       };
     }
 
