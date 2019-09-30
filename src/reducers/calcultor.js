@@ -87,9 +87,14 @@ export default function calcultor(state = initialState, action) {
     }
 
     case PRESS_AC: {
+      const { nums} = state
+
       return {
         ...state,
-        num: 0,
+        nums: {
+          ... nums,
+          curr : 0
+        },
         deputy: null,
       };
     }
@@ -158,11 +163,11 @@ export default function calcultor(state = initialState, action) {
         curr,
       } = nums;
 
-      if (nums === 0 && deputy === null) {
+      if ( deputy === null) {
         return state;
       }
 
-      const deputyScreen = `${deputy.substring(0, deputy.length - 1)}${operator}${curr}`;
+      const deputyScreen =  `${deputy.substring(0, deputy.length - 1)}${operator}${curr}`
 
 
       const postfix = toPostfix(deputyScreen);
