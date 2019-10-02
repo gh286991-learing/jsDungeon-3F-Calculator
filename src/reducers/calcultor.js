@@ -17,6 +17,7 @@ const initialState = {
     curr: 0,
     multiDivi: 0,
   },
+  formula: [],
   deputy: null,
   operatored: false,
   operator: null,
@@ -28,10 +29,25 @@ export default function calcultor(state = initialState, action) {
   switch (action.type) {
     case GET_NUM: {
       const numInput = action.num;
-      const { operatored, nums } = state;
+      const {
+        operatored, nums, calculated, formula,
+      } = state;
       const { last, curr, multiDivi } = nums;
 
       const num = !operatored ? Number(curr + numInput) : Number(numInput);
+
+      if (calculated) {
+        return {
+          ...state,
+          nums: {
+            ...nums,
+            curr: num,
+          },
+          deputy: null,
+          calcuator: false,
+          operatored: false,
+        };
+      }
 
       return {
         ...state,
@@ -40,6 +56,7 @@ export default function calcultor(state = initialState, action) {
           curr: num,
         },
         operatored: false,
+        calcuator: false,
       };
     }
 
@@ -87,13 +104,13 @@ export default function calcultor(state = initialState, action) {
     }
 
     case PRESS_AC: {
-      const { nums} = state
+      const { nums } = state;
 
       return {
         ...state,
         nums: {
-          ... nums,
-          curr : 0
+          ...nums,
+          curr: 0,
         },
         deputy: null,
       };
@@ -119,28 +136,26 @@ export default function calcultor(state = initialState, action) {
     case GET_PLUS: {
       const symbol = action.operator;
       const {
-        nums, deputy, operatored, calculated,
+        nums, deputy, operatored, calculated, formula,
       } = state;
       const { last, curr, multiDivi } = nums;
 
-      const screen = (deputy, operatored) => {
-        if (!deputy) {
-          return `${curr}${symbol}`;
-        } if (calculated) {
-          return `${deputy}${symbol}`;
-        }
-        if (operatored) {
-          return `${deputy.substring(0, deputy.length - 1)}${symbol}`;
-        } return `${deputy}${curr}${symbol}`;
-      };
+      if (calculated && operatored) {
+        formula.push(curr);
+        formula.push(symbol);
+      } else if (operatored) {
+        formula.pop();
+        formula.push(symbol);
+      } else {
+        formula.push(curr);
+        formula.push(symbol);
+      }
+      const calFormula = formula.concat();
+      calFormula.pop();
 
-      const deputyScreen = screen(deputy, operatored);
-
-      const formula = deputyScreen.substring(0, deputyScreen.length - 1);
-
-      const postfix = toPostfix(formula);
+      const postfix = toPostfix(calFormula);
       const value = postfixCal(postfix);
-
+      const formulaString = formula.map((el) => el);
 
       return {
         ...state,
@@ -148,7 +163,7 @@ export default function calcultor(state = initialState, action) {
           ...nums,
           curr: value,
         },
-        deputy: deputyScreen,
+        deputy: formulaString,
         operatored: true,
         operator: symbol,
         calculated: false,
@@ -157,21 +172,21 @@ export default function calcultor(state = initialState, action) {
 
     case PRESS_CALCULATE: {
       const {
-        nums, deputy, operator,
+        nums, deputy, operator, formula,
       } = state;
       const {
         curr,
       } = nums;
 
-      if ( deputy === null) {
+      if (deputy === null) {
         return state;
       }
 
-      const deputyScreen =  `${deputy.substring(0, deputy.length - 1)}${operator}${curr}`
 
-
-      const postfix = toPostfix(deputyScreen);
+      formula.push(curr);
+      const postfix = toPostfix(formula);
       const value = postfixCal(postfix);
+      const formulaString = formula.map((el) => el);
 
 
       return {
@@ -180,7 +195,8 @@ export default function calcultor(state = initialState, action) {
           ...nums,
           curr: value,
         },
-        deputy: deputyScreen,
+        formula: [],
+        deputy: formulaString,
         operatored: true,
         calculated: true,
       };

@@ -1,3 +1,4 @@
+import { concat } from 'bytebuffer';
 import Stack from './stack';
 
 const priority = (el) => {
@@ -9,11 +10,10 @@ const priority = (el) => {
 };
 
 export const toPostfix = function toPostfix(infix) {
-  const formula = infix.split('');
   const stack = new Stack();
   const postfix = [];
-
-  formula.forEach((el) => {
+  console.log('infix', infix);
+  infix.forEach((el) => {
     if ('+-x/'.indexOf(el) === -1) {
       postfix.push(el);
     } else {
@@ -52,8 +52,16 @@ export const postfixCal = function postfixCal(postfix) {
           cal = last + penultimate;
           stack.push(cal);
           break;
+        case '-':
+          cal = penultimate - last;
+          stack.push(cal);
+          break;
         case 'x':
           cal = last * penultimate;
+          stack.push(cal);
+          break;
+        case '/':
+          cal = penultimate / last;
           stack.push(cal);
           break;
 
