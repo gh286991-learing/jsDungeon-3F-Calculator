@@ -17,10 +17,9 @@ export const toPostfix = function toPostfix(infix) {
     if ('+-x/'.indexOf(el) === -1) {
       postfix.push(el);
     } else {
-      const lastPriority = priority(stack.peek());
-      const elPriority = priority(el);
-
-      if (!stack.isEmpty() && elPriority <= lastPriority) {
+      while (!stack.isEmpty()
+       && priority(el) <= priority(stack.peek())
+      ) {
         postfix.push(stack.pop());
       }
 
@@ -31,7 +30,6 @@ export const toPostfix = function toPostfix(infix) {
   while (!stack.isEmpty()) {
     postfix.push(stack.pop());
   }
-  console.log('postfix ', postfix);
   return postfix;
 };
 
@@ -67,6 +65,13 @@ export const postfixCal = function postfixCal(postfix) {
 
   return Number(stack.toString());
 };
+
+
+// const input = [
+//   ['5+6'],
+//   ['5+6x5'],
+//   ['5+6x6x5']
+// ]
 
 
 export default {
