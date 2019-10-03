@@ -73,6 +73,7 @@ export default function calcultor(state = initialState, action) {
           curr: 0,
         },
         deputy: null,
+        formula: []
       };
     }
 
