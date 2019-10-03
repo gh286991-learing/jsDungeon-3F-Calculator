@@ -1,8 +1,5 @@
 import {
   GET_NUM,
-  GET_ZERO,
-  GET_ZERO_ZERO,
-  GET_POINT,
   PRESS_AC,
   PRESS_BACK,
   GET_PLUS,
@@ -115,11 +112,25 @@ export default function calcultor(state = initialState, action) {
         formula.push(num);
         formula.push(symbol);
       }
+    
+
+
       const calFormula = formula.concat();
       calFormula.pop();
 
+      let mutiForm= []
+
+      if(symbol === 'x' ||symbol === '÷' && calFormula.length != 1){
+        const lastOP =  calFormula.lastIndexOf('+') > 0 ? calFormula.lastIndexOf('+') :calFormula.lastIndexOf('-')
+        mutiForm =  calFormula.concat()
+        mutiForm.splice(0,lastOP+1);
+      }
+
       const postfix = toPostfix(calFormula);
-      const value = postfixCal(postfix);
+      const result = postfixCal(postfix);
+
+      const mutiNum = postfixCal(toPostfix(mutiForm))
+      const value = mutiNum === 0 ? result:mutiNum
       const formulaString = formula.map((el) => el);
 
       return {

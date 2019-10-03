@@ -15,24 +15,6 @@ export function getNum(num) {
   };
 }
 
-export function getZero() {
-  return {
-    type: GET_ZERO,
-  };
-}
-
-export function getZeroZero() {
-  return {
-    type: GET_ZERO_ZERO,
-  };
-}
-
-export function getPoint() {
-  return {
-    type: GET_POINT,
-  };
-}
-
 export function pressAC() {
   return {
     type: PRESS_AC,
