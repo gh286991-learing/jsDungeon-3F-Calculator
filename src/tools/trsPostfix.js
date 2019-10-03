@@ -1,10 +1,9 @@
-import { concat } from 'bytebuffer';
 import Stack from './stack';
 
 const priority = (el) => {
   if (el === '+' || el === '-') {
     return 1;
-  } if (el === 'x' || el === '/') {
+  } if (el === 'x' || el === '÷') {
     return 2;
   } return 0;
 };
@@ -12,9 +11,9 @@ const priority = (el) => {
 export const toPostfix = function toPostfix(infix) {
   const stack = new Stack();
   const postfix = [];
-  console.log('infix', infix);
+
   infix.forEach((el) => {
-    if ('+-x/'.indexOf(el) === -1) {
+    if ('+-x÷'.indexOf(el) === -1) {
       postfix.push(el);
     } else {
       while (!stack.isEmpty()
@@ -40,7 +39,7 @@ export const postfixCal = function postfixCal(postfix) {
   const formula = postfix;
 
   formula.forEach((el) => {
-    if ('+-x/'.indexOf(el) === -1) {
+    if ('+-x÷'.indexOf(el) === -1) {
       stack.push(el);
     } else {
       const last = Number(stack.pop());
@@ -60,7 +59,7 @@ export const postfixCal = function postfixCal(postfix) {
           cal = last * penultimate;
           stack.push(cal);
           break;
-        case '/':
+        case '÷':
           cal = penultimate / last;
           stack.push(cal);
           break;
@@ -73,13 +72,6 @@ export const postfixCal = function postfixCal(postfix) {
 
   return Number(stack.toString());
 };
-
-
-// const input = [
-//   ['5+6'],
-//   ['5+6x5'],
-//   ['5+6x6x5']
-// ]
 
 
 export default {

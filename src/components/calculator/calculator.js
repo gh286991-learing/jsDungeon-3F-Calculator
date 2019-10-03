@@ -25,8 +25,10 @@ class Calculator extends React.Component {
 
   render() {
     const nums = [...Array(10).keys()];
+    nums.push([0], ['00'], ['.']);
+    const operator = ['÷', 'x', '+', '-'];
     const {
-      num, getZero, getZeroZero, getPoint, pressAC, pressBack, deputy, getPlus, pressCalculate,
+      num, pressAC, pressBack, deputy, getPlus, pressCalculate,
     } = this.props;
     return (
       <div className="container">
@@ -52,63 +54,35 @@ class Calculator extends React.Component {
                     return null;
                   }
                   return (
-                    <div key={value} className="number_bottom">
-                      <button
-                        type="button"
-                        className="text"
-                        onClick={this.valueClick}
-                        value={value}
-                      >
-                        {value}
-                      </button>
-                    </div>
+                    <button
+                      key={value}
+                      type="button"
+                      className="text"
+                      onClick={this.valueClick}
+                      value={value}
+                    >
+                      {value}
+                    </button>
+
                   );
                 })}
 
-                <div className="number_bottom">
-                  <button
-                    type="button"
-                    className="text"
-                    onClick={getZero}
-                  >
-                      0
-                  </button>
-                </div>
-                <div className="number_bottom">
-                  <button
-                    type="button"
-                    className="text"
-                    onClick={getZeroZero}
-                  >
-                      00
-                  </button>
-                </div>
-                <div className="number_bottom">
-                  <button
-                    type="button"
-                    className="text"
-                    onClick={getPoint}
-                  >
-                      .
-                  </button>
-                </div>
-
               </div>
             </div>
+
             <div className="function_area">
-              <button type="button" className="function_bottom" onClick={() => getPlus('/')}>
-                <div className="function_text"> ÷ </div>
-              </button>
-              <button type="button" className="function_bottom" onClick={() => getPlus('x')}>
-                <div className="function_text"> x </div>
-              </button>
-              <button type="button" className="function_bottom" onClick={() => getPlus('+')}>
-                <div className="function_text"> + </div>
-              </button>
-              <button type="button" className="function_bottom" onClick={() => getPlus('-')}>
-                <div className="function_text"> - </div>
-              </button>
+              {operator.map((op) => (
+                <button type="button" className="function_bottom" onClick={() => getPlus(op)}>
+                  <div className="function_text">
+                    {' '}
+                    {op}
+                    {' '}
+                  </div>
+                </button>
+              ))}
+
             </div>
+
           </div>
           <div className="bottom_button">
             <button type="button" className="AC_button" onClick={pressAC}>

@@ -34,7 +34,12 @@ export default function calcultor(state = initialState, action) {
       } = state;
       const { last, curr, multiDivi } = nums;
 
-      const num = !operatored ? Number(curr + numInput) : Number(numInput);
+      let num;
+      num = !operatored ? Number(curr + numInput) : Number(numInput);
+
+      if (numInput == '.') {
+        num = String(curr) + numInput;
+      }
 
       if (calculated) {
         return {
@@ -49,6 +54,7 @@ export default function calcultor(state = initialState, action) {
         };
       }
 
+
       return {
         ...state,
         nums: {
@@ -57,49 +63,6 @@ export default function calcultor(state = initialState, action) {
         },
         operatored: false,
         calcuator: false,
-      };
-    }
-
-    case GET_ZERO: {
-      const numBefore = state.num;
-
-
-      if (numBefore === 0) {
-        return state;
-      }
-
-      const num = String(`${numBefore}0`);
-      return {
-        ...state,
-        num,
-      };
-    }
-
-    case GET_ZERO_ZERO: {
-      const numBefore = state.num;
-
-      if (numBefore === 0) {
-        return state;
-      }
-
-      const num = String(`${numBefore}00`);
-      return {
-        ...state,
-        num,
-      };
-    }
-
-    case GET_POINT: {
-      const numBefore = String(state.num);
-
-      if (numBefore.indexOf('.') > 0) {
-        return state;
-      }
-
-      const num = String(`${numBefore}.`);
-      return {
-        ...state,
-        num,
       };
     }
 
@@ -140,14 +103,16 @@ export default function calcultor(state = initialState, action) {
       } = state;
       const { last, curr, multiDivi } = nums;
 
+      const num = Number(curr);
+
       if (calculated && operatored) {
-        formula.push(curr);
+        formula.push(num);
         formula.push(symbol);
       } else if (operatored) {
         formula.pop();
         formula.push(symbol);
       } else {
-        formula.push(curr);
+        formula.push(num);
         formula.push(symbol);
       }
       const calFormula = formula.concat();
