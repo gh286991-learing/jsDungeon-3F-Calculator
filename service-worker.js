@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/jsDungeon-3F-Calculator/precache-manifest.b3be8e249a0267efc93baa326053dc7a.js"
+  "/jsDungeon-3F-Calculator/precache-manifest.53f2a2d530e3a098e0dc867fc06a4f70.js"
 );
 
 self.addEventListener('message', (event) => {
