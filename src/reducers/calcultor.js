@@ -10,7 +10,7 @@ import { toPostfix, postfixCal } from '../tools/trsPostfix';
 
 const initialState = {
   nums: {
-    last: 0,
+    last: null,
     curr: 0,
     multiDivi: 0,
   },
@@ -73,7 +73,7 @@ export default function calcultor(state = initialState, action) {
           curr: 0,
         },
         deputy: null,
-        formula: []
+        formula: [],
       };
     }
 
@@ -103,6 +103,10 @@ export default function calcultor(state = initialState, action) {
 
       const num = Number(curr);
 
+      if (last) {
+        formula.length = 0;
+      }
+
       if (calculated && operatored) {
         formula.push(num);
         formula.push(symbol);
@@ -113,25 +117,24 @@ export default function calcultor(state = initialState, action) {
         formula.push(num);
         formula.push(symbol);
       }
-    
 
 
       const calFormula = formula.concat();
       calFormula.pop();
 
-      let mutiForm= []
+      let mutiForm = [];
 
-      if(symbol === 'x' ||symbol === '÷' && calFormula.length != 1){
-        const lastOP =  calFormula.lastIndexOf('+') > 0 ? calFormula.lastIndexOf('+') :calFormula.lastIndexOf('-')
-        mutiForm =  calFormula.concat()
-        mutiForm.splice(0,lastOP+1);
+      if (symbol === 'x' || symbol === '÷' && calFormula.length != 1) {
+        const lastOP = calFormula.lastIndexOf('+') > 0 ? calFormula.lastIndexOf('+') : calFormula.lastIndexOf('-');
+        mutiForm = calFormula.concat();
+        mutiForm.splice(0, lastOP + 1);
       }
 
       const postfix = toPostfix(calFormula);
       const result = postfixCal(postfix);
 
-      const mutiNum = postfixCal(toPostfix(mutiForm))
-      const value = mutiNum === 0 ? result:mutiNum
+      const mutiNum = postfixCal(toPostfix(mutiForm));
+      const value = mutiNum === 0 ? result : mutiNum;
       const formulaString = formula.map((el) => el);
 
       return {
@@ -139,6 +142,7 @@ export default function calcultor(state = initialState, action) {
         nums: {
           ...nums,
           curr: value,
+          last: null,
         },
         deputy: formulaString,
         operatored: true,
@@ -152,7 +156,7 @@ export default function calcultor(state = initialState, action) {
         nums, deputy, operator, formula,
       } = state;
       const {
-        curr,
+        curr, last,
       } = nums;
 
       if (deputy === null) {
@@ -160,19 +164,31 @@ export default function calcultor(state = initialState, action) {
       }
 
 
-      formula.push(curr);
+      let newformula;
+      if (last) {
+        formula.push(operator, last);
+        newformula = formula;
+      } else {
+        formula.push(curr);
+        newformula = formula;
+      }
+
       const postfix = toPostfix(formula);
       const value = postfixCal(postfix);
+
+
       const formulaString = formula.map((el) => el);
 
+      const lastNum = !last ? curr : last;
 
       return {
         ...state,
         nums: {
           ...nums,
           curr: value,
+          last: lastNum,
         },
-        formula: [],
+        formula: newformula,
         deputy: formulaString,
         operatored: true,
         calculated: true,
