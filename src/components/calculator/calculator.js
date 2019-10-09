@@ -31,16 +31,16 @@ class Calculator extends React.Component {
       num, pressAC, pressBack, deputy, getPlus, pressCalculate,
     } = this.props;
 
-    const width = window.screen.width
-    const height = window.screen.height
+    const { width } = window.screen;
+    const { height } = window.screen;
 
-    const style ={
+    const style = {
       width: `${width}px`,
-      height: `${height - height/6}px`,
-    }
+      height: `${height - height / 6}px`,
+    };
 
     return (
-      <div className="container" style = {style}>
+      <div className="container" style={style}>
         <div className="calculator_border">
           <div className="screen">
             <div className="deputy_screen">

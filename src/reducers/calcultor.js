@@ -34,13 +34,10 @@ export default function calcultor(state = initialState, action) {
       let num;
       if (numInput == '.' || String(curr).indexOf('.') > 0) {
         num = !operatored ? String(curr) + String(numInput) : Number(numInput);
-      }else{
+      } else {
         num = !operatored ? Number(curr + numInput) : Number(numInput);
       }
 
-     
-
-  
 
       if (calculated) {
         return {
@@ -140,8 +137,6 @@ export default function calcultor(state = initialState, action) {
       const mutiNum = postfixCal(toPostfix(mutiForm));
       const value = mutiNum === 0 ? result : mutiNum;
       const formulaString = formula.map((el) => el);
-      console.log('formula' , formula)
-      console.log('formulaString' , formulaString)
 
       return {
         ...state,
