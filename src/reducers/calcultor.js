@@ -32,10 +32,26 @@ export default function calcultor(state = initialState, action) {
       const { last, curr, multiDivi } = nums;
 
       let num;
-      if (numInput == '.' || String(curr).indexOf('.') > 0) {
-        num = !operatored ? String(curr) + String(numInput) : Number(numInput);
+
+      const hasPoint = String(curr).indexOf('.') > 0;
+
+      if (operatored) {
+        num = Number(numInput);
+      } else if (hasPoint && (numInput === '0' || numInput === '00')) {
+        num = String(curr + numInput);
       } else {
-        num = !operatored ? Number(curr + numInput) : Number(numInput);
+        num = Number(curr + numInput);
+      }
+
+
+      if (numInput === '.') {
+        if (hasPoint && !operatored) {
+          num = curr;
+        } else if (hasPoint && operatored) {
+          num = String(0 + numInput);
+        } else {
+          num = String(curr + numInput);
+        }
       }
 
 
