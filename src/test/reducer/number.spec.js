@@ -48,8 +48,7 @@ describe('Press number should be show in the mintor', () => {
 describe('0 & 00 function', () => {
   describe('When monitor is 0 press 0 or 00', () => {
     it('Press 0 buttom, monitor should be 0', () => {
-      let state;
-      state = calculator({
+      const state = calculator({
         calcultor: {
           nums: { curr: 0 },
         },
@@ -60,8 +59,7 @@ describe('0 & 00 function', () => {
     });
 
     it('Press 00 buttom, monitor should be 0', () => {
-      let state;
-      state = calculator({
+      const state = calculator({
         calcultor: {
           nums: { curr: 0 },
         },
@@ -71,10 +69,10 @@ describe('0 & 00 function', () => {
       expect(mintor).toBe(0);
     });
   });
+
   describe('when mointor has number , press 0 & 00', () => {
     it('Input unknow, should be return state', () => {
-      let state;
-      state = calculator({
+      const state = calculator({
         calcultor: {
           nums: { curr: 0 },
         },
@@ -84,8 +82,7 @@ describe('0 & 00 function', () => {
       expect(mintor).toBe(0);
     });
     it('Monitor is 2 , press 0 buttom, should be 20', () => {
-      let state;
-      state = calculator({
+      const state = calculator({
         calcultor: {
           nums: { curr: 2 },
         },
@@ -96,8 +93,7 @@ describe('0 & 00 function', () => {
     });
 
     it('Monitor is 2 , press 00 buttom, should be 200', () => {
-      let state;
-      state = calculator({
+      const state = calculator({
         calcultor: {
           nums: { curr: 2 },
         },
@@ -105,6 +101,96 @@ describe('0 & 00 function', () => {
 
       const mintor = state.calcultor.nums.curr;
       expect(mintor).toBe(200);
+    });
+  });
+});
+
+describe('Point function', () => {
+  describe('Number get point', () => {
+    it('Mointor is 2 , press . , shold be 2.', () => {
+      const state = calculator({
+        calcultor: {
+          nums: { curr: 2 },
+        },
+      }, { type: 'GET_NUM', num: '.' });
+      const mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe('2.');
+    });
+
+    it('Press many times .,  2. shold be 2.', () => {
+      let state;
+
+      // set inital condition and press 1 time
+      state = calculator({
+        calcultor: {
+          nums: { curr: 2 },
+        },
+      }, { type: 'GET_NUM', num: '.' });
+
+      // set inital condition and press 2 times
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '.' });
+
+      // set inital condition and press 3 times
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '.' });
+
+      const mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe('2.');
+    });
+
+    it('input 0.001 in monitor', () => {
+      let state;
+      let mintor;
+
+      state = calculator({
+        calcultor: {
+          nums: { curr: 0 },
+        },
+      }, { type: 'GET_NUM', num: '.' });
+
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '0' });
+
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '00' });
+
+      mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe('0.000');
+
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '1' });
+
+      mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe(0.0001);
+    });
+  });
+
+  describe('Press . after press operator', () => {
+    it('After +, press . should be 0.', () => {
+      let state;
+      let mintor;
+
+      state = calculator({
+        calcultor: {
+          nums: { curr: 0 }, formula: [],
+        },
+      }, { type: 'GET_PLUS', operator: '+' });
+
+      mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe(0);
+
+
+      state = calculator({
+        ...state,
+      }, { type: 'GET_NUM', num: '.' });
+      mintor = state.calcultor.nums.curr;
+      expect(mintor).toBe('0.');
     });
   });
 });
