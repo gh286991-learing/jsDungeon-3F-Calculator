@@ -4,7 +4,7 @@ export const GET_ZERO_ZERO = 'GET_ZERO_ZERO';
 export const GET_POINT = 'GET_POINT';
 export const PRESS_AC = 'PRESS_AC';
 export const PRESS_BACK = 'PRESS_BACK';
-export const GET_PLUS = 'GET_PLUS';
+export const GET_OPERATOR = 'GET_OPERATOR';
 export const PRESS_CALCULATE = 'PRESS_CALCULATE';
 
 
@@ -29,7 +29,7 @@ export function pressBack() {
 
 export function getPlus(operator) {
   return {
-    type: GET_PLUS,
+    type: GET_OPERATOR,
     operator,
   };
 }

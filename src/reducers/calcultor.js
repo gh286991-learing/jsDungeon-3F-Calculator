@@ -2,7 +2,7 @@ import {
   GET_NUM,
   PRESS_AC,
   PRESS_BACK,
-  GET_PLUS,
+  GET_OPERATOR,
   PRESS_CALCULATE,
 } from '../actions/calcuator';
 
@@ -111,7 +111,7 @@ export default function calcultor(state = initialState, action) {
       };
     }
 
-    case GET_PLUS: {
+    case GET_OPERATOR: {
       const symbol = action.operator;
       const {
         nums, deputy, operatored, calculated, formula,

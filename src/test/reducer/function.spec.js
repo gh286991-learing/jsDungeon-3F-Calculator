@@ -113,7 +113,7 @@ describe('Calculate bottom', () => {
       // Get plus
       state = calculator({
         ...state,
-      }, { type: 'GET_PLUS', operator: '+' });
+      }, { type: 'GET_OPERATOR', operator: '+' });
 
       //   Get number 3
       state = calculator({

@@ -180,7 +180,7 @@ describe('Point function', () => {
         calcultor: {
           nums: { curr: 0 }, formula: [],
         },
-      }, { type: 'GET_PLUS', operator: '+' });
+      }, { type: 'GET_OPERATOR', operator: '+' });
 
       mintor = state.calcultor.nums.curr;
       expect(mintor).toBe(0);
