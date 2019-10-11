@@ -27,7 +27,7 @@ export function pressBack() {
   };
 }
 
-export function getPlus(operator) {
+export function getOperator(operator) {
   return {
     type: GET_OPERATOR,
     operator,

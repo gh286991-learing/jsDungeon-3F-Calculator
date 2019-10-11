@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import './calculator.sass';
 
 
@@ -8,27 +9,15 @@ class Calculator extends React.Component {
     this.state = {
 
     };
-    this.valueClick = this.valueClick.bind(this);
-    this.onClick = this.onClick.bind(this);
   }
 
-  valueClick = (e) => {
-    const { getNum } = this.props;
-    const values = e.currentTarget.value;
-    getNum(values);
-  }
-
-  onClick =(e) => {
-    const values = e.target.value;
-    console.log('value', values);
-  }
 
   render() {
     const nums = [...Array(10).keys()];
     nums.push([0], ['00'], ['.']);
     const operator = ['÷', 'x', '+', '-'];
     const {
-      num, pressAC, pressBack, deputy, getPlus, pressCalculate,
+      num, pressAC, pressBack, deputy, getOperator, pressCalculate, getNum,
     } = this.props;
 
     const { width } = window.screen;
@@ -67,8 +56,8 @@ class Calculator extends React.Component {
                       key={value}
                       type="button"
                       className="text"
-                      onClick={this.valueClick}
                       value={value}
+                      onClick={(e) => getNum(e.currentTarget.value)}
                     >
                       {value}
                     </button>
@@ -81,7 +70,7 @@ class Calculator extends React.Component {
 
             <div className="function_area">
               {operator.map((op) => (
-                <button type="button" className="function_bottom" onClick={() => getPlus(op)}>
+                <button key={op} type="button" className="function_bottom" onClick={() => getOperator(op)}>
                   <div className="function_text">
                     {' '}
                     {op}
@@ -110,5 +99,19 @@ class Calculator extends React.Component {
     );
   }
 }
+
+
+Calculator.propTypes = {
+  num: PropTypes.number.isRequired,
+  deputy: PropTypes.arrayOf(
+    PropTypes.number,
+    PropTypes.string,
+  ).isRequired,
+  getNum: PropTypes.func.isRequired,
+  pressAC: PropTypes.func.isRequired,
+  pressBack: PropTypes.func.isRequired,
+  getOperator: PropTypes.func.isRequired,
+  pressCalculate: PropTypes.func.isRequired,
+};
 
 export default Calculator;

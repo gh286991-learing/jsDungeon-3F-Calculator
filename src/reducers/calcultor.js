@@ -15,7 +15,7 @@ const initialState = {
     multiDivi: 0,
   },
   formula: [],
-  deputy: null,
+  deputy: [],
   operatored: false,
   operator: null,
   calculated: false,
@@ -27,9 +27,9 @@ export default function calcultor(state = initialState, action) {
     case GET_NUM: {
       const numInput = action.num;
       const {
-        operatored, nums, calculated, formula,
+        operatored, nums, calculated,
       } = state;
-      const { last, curr, multiDivi } = nums;
+      const { curr } = nums;
 
       let num;
 
@@ -62,7 +62,7 @@ export default function calcultor(state = initialState, action) {
             ...nums,
             curr: num,
           },
-          deputy: null,
+          deputy: [],
           calcuator: false,
           operatored: false,
         };
@@ -89,7 +89,7 @@ export default function calcultor(state = initialState, action) {
           ...nums,
           curr: 0,
         },
-        deputy: null,
+        deputy: [],
         formula: [],
       };
     }
@@ -114,9 +114,9 @@ export default function calcultor(state = initialState, action) {
     case GET_OPERATOR: {
       const symbol = action.operator;
       const {
-        nums, deputy, operatored, calculated, formula,
+        nums, operatored, calculated, formula,
       } = state;
-      const { last, curr, multiDivi } = nums;
+      const { last, curr } = nums;
 
       const num = Number(curr);
 
@@ -141,7 +141,7 @@ export default function calcultor(state = initialState, action) {
 
       let mutiForm = [];
 
-      if (symbol === 'x' || symbol === '÷' && calFormula.length != 1) {
+      if ((symbol === 'x' || symbol === '÷') && calFormula.length !== 1) {
         const lastOP = calFormula.lastIndexOf('+') > 0 ? calFormula.lastIndexOf('+') : calFormula.lastIndexOf('-');
         mutiForm = calFormula.concat();
         mutiForm.splice(0, lastOP + 1);
@@ -170,13 +170,14 @@ export default function calcultor(state = initialState, action) {
 
     case PRESS_CALCULATE: {
       const {
-        nums, deputy, operator, formula,
+        nums, operator, formula,
       } = state;
       const {
         curr, last,
       } = nums;
 
-      if (deputy === null) {
+      const counting = formula.length > 0;
+      if (!counting) {
         return state;
       }
 

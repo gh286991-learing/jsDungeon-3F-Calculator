@@ -38,7 +38,7 @@ describe('AC function', () => {
 
       expect(state).toEqual({
         calcultor: {
-          nums: { curr: 0 }, formula: [], deputy: null,
+          nums: { curr: 0 }, formula: [], deputy: [],
         },
       });
     });
@@ -46,13 +46,13 @@ describe('AC function', () => {
     it('Monitor is 0, shold return 0', () => {
       const state = calculator({
         calcultor: {
-          nums: { curr: 0 }, formula: [], deputy: null,
+          nums: { curr: 0 }, formula: [], deputy: [],
         },
       }, { type: 'PRESS_AC' });
 
       expect(state).toEqual({
         calcultor: {
-          nums: { curr: 0 }, formula: [], deputy: null,
+          nums: { curr: 0 }, formula: [], deputy: [],
         },
       });
     });
@@ -60,6 +60,36 @@ describe('AC function', () => {
 });
 
 describe('Calculate bottom', () => {
+  describe('Inital state press calculate', () => {
+    let state;
+    it('0 , press calculate should happen nothing', () => {
+      state = calculator({
+        calcultor: {
+          nums: { curr: 0 }, formula: [], deputy: [],
+        },
+      }, { type: 'PRESS_CALCULATE' });
+
+      const monitor = state.calcultor.nums.curr;
+      const depty = state.calcultor.deputy;
+      expect(monitor).toBe(0);
+      expect(depty).toEqual([]);
+    });
+
+    it('Press calculate 3 times should happen nothing', () => {
+      state = calculator({
+        ...state,
+      }, { type: 'PRESS_CALCULATE' });
+
+      state = calculator({
+        ...state,
+      }, { type: 'PRESS_CALCULATE' });
+
+      const monitor = state.calcultor.nums.curr;
+      const depty = state.calcultor.deputy;
+      expect(monitor).toBe(0);
+      expect(depty).toEqual([]);
+    });
+  });
   describe('Get the result for formular', () => {
     it('formular is 1+1, it should be return 2', () => {
       const state = calculator({
@@ -106,7 +136,7 @@ describe('Calculate bottom', () => {
       const monitor = state.calcultor.nums.curr;
       const depty = state.calcultor.deputy;
       expect(monitor).toBe(2);
-      expect(depty).toBe(null);
+      expect(depty).toEqual([]);
     });
 
     it('Get plus + & Get number 3', () => {
