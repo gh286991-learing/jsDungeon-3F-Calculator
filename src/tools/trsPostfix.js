@@ -42,25 +42,34 @@ export const postfixCal = function postfixCal(postfix) {
     if ('+-x÷'.indexOf(el) === -1) {
       stack.push(el);
     } else {
-      const last = Number(stack.pop());
-      const penultimate = Number(stack.pop());
+      const last = String(stack.pop());
+      const penultimate = String(stack.pop());
+
+      const lastDigits = (last.split('.')[1] || '').length;
+      const penultimateDigits = (penultimate.split('.')[1] || '').length;
+      const max = Math.max(lastDigits, penultimateDigits);
+      // eslint-disable-next-line no-restricted-properties
+      const baseNum = Math.pow(10, max);
+      const num1 = last * baseNum;
+      const num2 = penultimate * baseNum;
       let cal;
+
 
       switch (el) {
         case '+':
-          cal = last + penultimate;
+          cal = (num1 + num2) / baseNum;
           stack.push(cal);
           break;
         case '-':
-          cal = penultimate - last;
+          cal = (num2 - num1) / baseNum;
           stack.push(cal);
           break;
         case 'x':
-          cal = last * penultimate;
+          cal = (num1 * num2) / baseNum;
           stack.push(cal);
           break;
         case '÷':
-          cal = penultimate / last;
+          cal = (num2 / num1) / baseNum;
           stack.push(cal);
           break;
 
