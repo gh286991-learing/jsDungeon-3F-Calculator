@@ -57,7 +57,7 @@ class Calculator extends React.Component {
                       type="button"
                       className="text"
                       value={value}
-                      onClick={(e) => getNum(e.currentTarget.value)}
+                      onClick={() => getNum(String(value))}
                     >
                       {value}
                     </button>
